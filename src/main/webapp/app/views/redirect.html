@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+
+FACILITATES OAuth 1,1a,2 AUTHENTICATION
+
+To link to this page in HelloJS define the redirect_uri.
+
+This page is used for authentication as well as POST using the Iframe+form+hash communication hack.
+
+
+-->
+<html>
+    <head>
+        <title>Hello, redirecting...</title>
+    </head>
+    <body>
+        <script src="./src/hello.js"></script>
+
+        <script>
+            hello.on('auth.login', function(auth) {
+
+                // call user information, for the given network
+                hello(auth.network).api('/me').success(function(r) {
+                    var $target = $("#profile_" + auth.network);
+                    if ($target.length == 0) {
+                        $target = $("<div id='profile_" + auth.network + "'></div>").appendTo("#profile");
+                    }
+                    $target.html('<img src="' + r.thumbnail + '" /> Hey ' + r.name).attr('title', r.name + " on " + auth.network);
+                });
+            });
+        </script>
+    </body>
+</html>

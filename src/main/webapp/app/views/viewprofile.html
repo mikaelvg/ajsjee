@@ -1,0 +1,1508 @@
+<div ng-controller="headerCtrl">
+    <div ng-include="'app/views/header.html'"></div>
+</div>
+
+<!-- view profile -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="well well-sm" ng-show="appuser">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                        <div class="thumbnail img-thumbnail">
+                            <img ng-src="{{profile.profilePicture}}" ng-show="profile.profilePicture" alt="Picture" class="img-responsive" />
+                            <img ng-src="{{(!isCompanyActive) ? 'app/images/ajsjee-icons/no-profile-picture.png' : 'app/images/ajsjee-icons/company-logo-default.png'}}" ng-hide="profile.profilePicture" alt="Picture" class="img-responsive" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                        <hr>    
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-5 hidden-xs text-right">
+                                <strong>Name:</strong>
+                            </div>
+                            <div class="col-xs-12 visible-xs">
+                                <strong>Name:</strong>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 text-nowrap">
+                                {{appuser.firstName}} {{appuser.lastName}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-5 hidden-xs text-right">
+                                <strong>Gender:</strong>
+                            </div>
+                            <div class="col-xs-12 visible-xs">
+                                <strong>Gender:</strong>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 text-nowrap">
+                                {{appuser.gender}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-5 hidden-xs text-right">
+                                <strong>Last Login:</strong>
+                            </div>
+                            <div class="col-xs-12 visible-xs">
+                                <strong>Last Login:</strong>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 text-nowrap">
+                                {{appuser.lastLogin| date: 'MM/dd/yyyy h:mm a'}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-5 hidden-xs text-right">
+                                <strong>Registered:</strong>
+                            </div>
+                            <div class="col-xs-12 visible-xs">
+                                <strong>Registered:</strong>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 text-nowrap">
+                                {{appuser.membershipDate| date: 'MM/dd/yyyy'}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-5 hidden-xs text-right">
+                                <strong>Rating:</strong>
+                            </div>
+                            <div class="col-xs-12 visible-xs">
+                                <strong>Rating:</strong>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 text-nowrap">
+                                <rating ng-model="currentRating" max="5" readonly="true"
+                                        style="color: orange" ng-init="currentRating = 0">
+                                </rating>
+                                <span class="badge" style="color: white">
+                                    {{currentRating| setDecimal: 2}}
+                                    <span ng-show="hasRatings">({{ratingCount}})</span>
+                                </span>
+                                <div class="red" ng-show="false">
+                                    <small><small>Average rating of<span ng-show="ratingCount >= ratingLength"> latest</span> {{ratingCount}} rate<span ng-show="ratingCount > 1">s</span>.</small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row" ng-show="isNotServiceProvider">
+                            <div class="col-lg-4 col-md-4 col-sm-5 hidden-xs text-right">
+                                <strong>How's my Service?</strong>
+                            </div>
+                            <div class="col-xs-12 visible-xs">
+                                <strong>How's my Service?</strong>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12">
+                                <rating ng-model="rate" max="5" readonly="false"
+                                        on-hover="ratingHoveringOver(value)" on-leave="overStar = null"
+                                        ng-init="rate = 0"
+                                        style="color: blue" ng-click="rateProfile()">
+                                </rating>
+                                <span class="badge" style="color: white">{{rate}}</span>
+                                <span class="label" ng-class="{'label-danger': percent == 20, 'label-warning': percent == 40, 'label-primary': percent == 60, 'label-info': percent == 80, 'label-success': percent == 100}"
+                                      ng-show="overStar && !isReadonly">
+                                    <span ng-show="percent == 20" style="color: white">Very Dissatisfied</span>
+                                    <span ng-show="percent == 40" style="color: white">Somewhat Dissatisfied</span>
+                                    <span ng-show="percent == 60" style="color: white">Neither Satisfied Nor Dissatisfied</span>
+                                    <span ng-show="percent == 80" style="color: white">Somewhat Satisfied</span>
+                                    <span ng-show="percent == 100" style="color: white">Very Satisfied</span>
+                                </span>
+                            </div>
+                        </div>
+                        <hr ng-show="makeAsMyAgentButton">
+                        <div class="row" ng-show="makeAsMyAgentButton">
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-5">
+                                <button type="button" class="btn btn-primary btn-block"
+                                        ng-disabled="disableMakeAsMyAgentButton"
+                                        data-toggle="modal" data-target="#makeAsMyAgentModal">
+                                    Make As My Agent
+                                </button>
+                            </div>
+                        </div>
+                        <hr ng-show="removeAsMyAgentButton">
+                        <div class="row" ng-show="removeAsMyAgentButton">
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-5">
+                                <button type="button" class="btn btn-primary btn-block"
+                                        ng-disabled="disableRemoveAsMyAgentButton"
+                                        data-toggle="modal" data-target="#removeAsMyAgentModal">
+                                    Remove As My Agent
+                                </button>
+                            </div>
+                        </div>
+                        <hr ng-show="inviteAsServiceProviderButton">
+                        <div class="row" ng-show="inviteAsServiceProviderButton">
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-5">
+                                <button type="button" class="btn btn-primary btn-block"
+                                        ng-click="inviteAsServiceProvider()">
+                                    Invite as Service Provider
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Badges | Credentials -->
+                <div class="row badges-for-credentials" ng-show="lstBadgeCredential">
+                    <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12">
+                        <hr>
+                        <img ng-src="{{badgeCredential.fkCfgBadgeCredentialId.cfgBadgeCredentialImage}}"
+                             ng-repeat="badgeCredential in lstBadgeCredential"
+                             ng-click="enlargeBadgeCredential(badgeCredential)"
+                             alt="{{cfgBadgeCredentialName}}" style="width: 50px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="scrollTo"></div>
+<div class="container container-fix">
+    <tabset>
+        <tab heading="Contact Details" class="tab-heading" ng-click="switchTab('contact details')">
+            <div class="panel panel-default panel-tab">
+                <br />
+                <!--my profile details-->
+
+                <div class="col-lg-6 col-md-8">
+                    <div class="well well-sm">
+                        <h4 class="text-center"><strong>Contact Details</strong></h4>
+                        <hr>
+                        <div ng-show="!hasProfile">
+                            <span ng-hide="doneLoadingProfile">Loading...</span>
+                            <span ng-show="doneLoadingProfile">Contact details not available</span>
+                        </div>
+                        <div ng-show="hasProfile">
+                            <div class="panel panel-default" ng-show="agentProfile">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                    <h5>
+                                        <strong ng-hide="agentProfile">Contact Details</strong>
+                                        <strong ng-show="agentProfile">Please contact my online representative</strong>
+                                    </h5>
+                                    <hr>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                            <strong>Name:</strong>
+                                        </div>
+                                        <div class="col-xs-12 visible-xs">
+                                            <strong>Name:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                            {{agentProfile.fkAppuserId.firstName}} {{agentProfile.fkAppuserId.lastName}}
+                                            <a href="#!/viewprofile/{{agentProfile.fkAppuserId.pkAppuserId}}" 
+                                               class="btn btn-primary btn-xs pull-right">
+                                                View full profile
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                            <strong>Mobile Number:</strong>
+                                        </div>
+                                        <div class="col-xs-12 visible-xs">
+                                            <strong>Mobile Number:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                            +63{{mobileNumber}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="landline">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                            <strong>Landline:</strong>
+                                        </div>
+                                        <div class="col-xs-12 visible-xs">
+                                            <strong>Landline:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                            {{landline}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                            <strong>Email:</strong>
+                                        </div>
+                                        <div class="col-xs-12 visible-xs">
+                                            <strong>Email:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                            <p>{{businessEmail}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="row" ng-hide="agentProfile">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Mobile Number:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Mobile Number:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        +63{{mobileNumber}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-hide="agentProfile || !landline">
+                            <div class="row" ng-show="landline">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="agentProfile">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Landline:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Landline:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        (+63) <span ng-show="areaCode">({{areaCode}}) </span>
+                                        {{landlineNumber}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-hide="agentProfile">
+                            <div class="row" ng-hide="agentProfile">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Business Email:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Business Email:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{businessEmail}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-hide="agentProfile">
+                            <div class="row" ng-show="profile.zipCode">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Zip Code:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Zip Code:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{profile.zipCode}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-show="profile.zipCode">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Province:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Province:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{profile.fkCfgStateprovinceId.stateprovinceName}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>City or Town:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>City or Town:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{profile.fkCfgCitytownId.citytownName}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Barangay:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Barangay:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{profile.fkCfgBarangayId.barangayName}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-if="profile.privacyLevel == 1">
+                            <div class="row" ng-if="profile.privacyLevel == 1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Street/Subdivision:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Street/Subdivision:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{profile.streetsubdivision}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-if="profile.privacyLevel == 1">
+                            <div class="row" ng-if="profile.privacyLevel == 1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Unit, Floor No.:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Unit, Floor No.:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        {{profile.unitbuilding}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-show="profile.googleMap">
+                            <div class="row" ng-show="profile.googleMap">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs text-right">
+                                        <strong>Google Map View:</strong>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <strong>Google Map View:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        <button class="btn btn-primary btn-xs" ng-click="geolocateUser()"
+                                                data-toggle="modal" data-target="#googlemapModal">
+                                            <span class="glyphicon glyphicon-map-marker"></span>
+                                            View Location
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </tab>
+
+        <!--services provided-->
+
+        <tab heading="Services" class="tab-heading" active="serviceTab" ng-click="switchTab('services')">
+            <div class="panel panel-default panel-tab">
+                <br />
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="scrollToServices">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h4 class="text-center">
+                                <strong>
+                                    <span ng-show="isCompanyActive">Our</span>
+                                    <span ng-hide="isCompanyActive">My</span>
+                                    Service<span ng-if="recordCountService > 1">s</span>
+                                </strong>
+                                <a href="#!/postad" class="btn btn-xs btn-primary pull-right" ng-show="myDashboard">Create Service</a>
+                            </h4>
+                        </div>
+                        <div class="list-group-item" ng-show="!hasServices">
+                            <span ng-hide="doneLoadingServiceList">Loading...</span>
+                            <span ng-show="doneLoadingServiceList">No service available</span>
+                        </div>
+                        <div class="list-group-item hidden-xs" ng-show="hasServices">
+                            <div class="row">
+                                <div ng-class="titleHead">
+                                    <strong>Title</strong>
+                                </div>
+                                <div ng-class="descriptionHead">
+                                    <strong>Description</strong>
+                                </div>
+                                <div ng-class="priceUnitHead">
+                                    <strong>Price / Unit</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item"
+                             tooltip="{{(Service.serviceStatus == 0) ? 'This service is for review' : '' || (Service.serviceStatus == 2) ? 'This service is not approved' : '' || (Service.ispublished == false) ? 'Unpublished Service' : ''}}"
+                             ng-class="{'approved-published': Service.serviceStatus == 1 && Service.ispublished, 'maroon': Service.serviceStatus == 0, 'not-approved': Service.serviceStatus == 2}"
+                             ng-repeat="Service in lstService| orderBy:'lastupdateDate':true | startFrom:(currentPageService - 1) * totalCountPerPageService | limitTo: totalCountPerPageService">
+                            <div class="row">
+                                <div ng-click="redirectToViewService(Service, 'service')">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 text-nowrap">
+                                        <strong>{{Service.serviceTitle}}</strong>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-5 text-nowrap">
+                                        {{Service.serviceDescription}}<br />
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3">
+                                        <span ng-show="Service.servicePrice == 0 && !Service.isNonIndividualPost">Free</span>
+                                        <span ng-show="Service.servicePrice == -1 && !Service.isNonIndividualPost">Call me for quotation</span>
+                                        <span ng-repeat="unit in priceUnit"
+                                              ng-if="unit.id == Service.serviceUnit
+                                                                              && !Service.isNonIndividualPost
+                                                                              && Service.servicePrice != -1
+                                                                              && Service.servicePrice != 0">
+                                            {{Service.servicePrice| currency: '&#8369; '}} {{unit.description}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="clearfix visible-md visible-sm"></div>
+                                <br class="visible-md visible-sm visible-xs" />
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3" ng-show="isServiceProvider">
+                                    <button class="btn btn-success btn-block btn-xs" title="Publish" ng-if="Service.ispublished == false"
+                                            ng-click="changeIsPublishedService(Service)">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                        <small class="hidden-xs">Publish</small>
+                                    </button>
+                                    <button class="btn btn-success btn-block btn-xs green-yellow" title="Unpublish" ng-if="Service.ispublished == true"
+                                            ng-click="changeIsPublishedService(Service)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                        <small class="hidden-xs">Unpublish</small>
+                                    </button>
+                                </div>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3" ng-show="isServiceProvider">
+                                    <button class="btn btn-primary btn-block btn-xs" ng-click="redirectedToManageService(Service.fkCfgServiceId.pkCfgServiceId, Service.pkServiceId)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        <small class="hidden-xs">Edit</small>
+                                    </button>
+                                </div>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3" ng-show="isServiceProvider">
+                                    <button class="btn btn-danger btn-block btn-xs" ng-click="confirmRemove(Service.pkServiceId, 'service')">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <small class="hidden-xs">Delete</small>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item services-provided"
+                             ng-repeat="Service in lstPublishedservice| orderBy:'lastupdateDate':true | startFrom:(currentPageService - 1) * totalCountPerPageService | limitTo: totalCountPerPageService">
+                            <div class="row">
+                                <div ng-click="redirectToViewService(Service, 'publishedservice')">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 text-nowrap">
+                                        <strong>{{Service.serviceTitle}}</strong>
+                                    </div>
+                                    <div class="col-lg-6 col-md-5 col-sm-5 text-nowrap">
+                                        {{Service.serviceDescription}}<br />
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3">
+                                        <span ng-show="Service.servicePrice == 0 && !Service.isNonIndividualPost">Free</span>
+                                        <span ng-show="Service.servicePrice == -1 && !Service.isNonIndividualPost">Call me for quotation</span>
+                                        <span ng-repeat="unit in priceUnit"
+                                              ng-if="unit.id == Service.serviceUnit
+                                                                              && !Service.isNonIndividualPost
+                                                                              && Service.servicePrice != -1
+                                                                              && Service.servicePrice != 0">
+                                            {{Service.servicePrice| currency: '&#8369; '}} {{unit.description}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="recordCountService > 10">
+                    <pagination total-items="recordCountService"
+                                ng-model="currentPageService" ng-click="scrollTo('#scrollToServices')"
+                                items-per-page="totalCountPerPageService"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                first-text="&laquo;" last-text="&raquo;" class="pagination-sm"
+                                boundary-links="true" rotate="false" num-pages="numPages">
+                    </pagination>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <span class="input-group input-group-sm" style="width: 275px; margin: auto">
+                            <span class="input-group-addon">Result<span ng-if="recordCountService > 1">s</span> found: {{recordCountService}}</span>
+                            <select class="form-control input-sm" ng-model="totalCountPerPageService"
+                                    ng-init="totalCountPerPageService = 10">
+                                <option value="10">10 results per page</option>
+                                <option value="25" ng-if="recordCountService > 25">25 results per page</option>
+                                <option value="50" ng-if="recordCountService > 50">50 results per page</option>
+                                <option value="100" ng-if="recordCountService > 100">100 results per page</option>
+                                <option value="{{recordCountService}}" ng-if="recordCountService > 10">View All</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+        </tab>
+
+        <!--jobpost list-->
+
+        <tab heading="Job Postings" class="tab-heading" active="jobpostTab" ng-click="switchTab('job postings')">
+            <div class="panel panel-default panel-tab">
+                <br />
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="scrollToJobPostings">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h4 class="text-center">
+                                <strong>Job Posting<span ng-if="recordCountJobpost > 1">s</span></strong>
+                                <a href="#!/postad" class="btn btn-xs btn-primary pull-right" ng-show="myDashboard">Post a Job Opening</a>
+                            </h4>
+                        </div>
+                        <div class="list-group-item" ng-show="!hasJobpost">
+                            <span ng-hide="doneLoadingJobpostingList">Loading...</span>
+                            <span ng-show="doneLoadingJobpostingList">No job posting available</span>
+                        </div>
+                        <div class="list-group-item hidden-xs" ng-show="hasJobpost">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <strong>Job Post Title</strong>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9">
+                                    <strong>Address</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item"
+                             tooltip="{{(Jobpost.jobpostStatus == 0) ? 'This job post is for review' : '' || (Jobpost.jobpostStatus == 2) ? 'This job post is not approved' : '' || (Jobpost.ispublished == false) ? 'Unpublished Jobpost' : ''}}"
+                             ng-class="{'approved-published': Jobpost.jobpostStatus == 1 && Jobpost.ispublished || !isJobpost, 'maroon': Jobpost.jobpostStatus == 0, 'not-approved': Jobpost.jobpostStatus == 2, 'light-gray': Jobpost.jobpostDescription}"
+                             ng-show="hasJobpost" ng-repeat="Jobpost in lstJobpost| orderBy:'lastupdateDate':true | startFrom:(currentPageJobpost - 1) * totalCountPerPageJobpost | limitTo: totalCountPerPageJobpost">
+                            <div class="row">
+                                <div ng-click="redirectToViewJobpost(Jobpost)">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 text-nowrap" ng-class="{'bold': Jobpost.jobpostDescription}">
+                                        <span ng-show="Jobpost.jobpostTitle">{{Jobpost.jobpostTitle}} </span><span ng-hide="Jobpost.jobpostDescription">{{Jobpost.fkCfgServiceId.cfgServiceName}}</span>
+                                    </div>
+                                    <div class="col-lg-6 col-md-3 col-sm-3 text-nowrap" ng-show="isJobpost">
+                                        <span ng-show="Jobpost.unitAddress">{{Jobpost.unitAddress}}, </span>
+                                        <span ng-show="Jobpost.streetAddress">{{Jobpost.streetAddress}}, </span>
+                                        <span>{{Jobpost.fkCfgBarangayId.barangayName}}, </span>
+                                        <span>{{Jobpost.fkCfgBarangayId.fkCfgCitytownId.citytownName}}, </span>
+                                        <span>{{Jobpost.fkCfgBarangayId.fkCfgCitytownId.fkCfgStateprovinceId.stateprovinceName}}</span>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 text-nowrap" ng-hide="isJobpost">
+                                        <span ng-show="Jobpost.unitAddress">{{Jobpost.unitAddress}}, </span>
+                                        <span ng-show="Jobpost.streetAddress">{{Jobpost.streetAddress}}, </span>
+                                        <span>{{Jobpost.barangayName}}, </span>
+                                        <span>{{Jobpost.citytownName}}, </span>
+                                        <span>{{Jobpost.stateprovinceName}}</span>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 text-nowrap hidden-xs" ng-hide="isJobpost">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <small class="pull-right">{{Jobpost.creationDate| date: 'dd MMM yyyy'}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 text-nowrap visible-xs" ng-hide="isJobpost">
+                                        <small>{{Jobpost.creationDate| date: 'dd MMM yyyy'}}</small>
+                                    </div>
+                                </div>
+                                <br class="visible-xs" ng-if="isJobpost == true" />
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3" ng-show="isJobpost">
+                                    <button class="btn btn-success btn-block btn-xs" title="Publish" ng-if="Jobpost.ispublished == false"
+                                            ng-click="changeIsPublishedJobpost(Jobpost)">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                        <small class="hidden-xs">Publish</small>
+                                    </button>
+                                    <button class="btn btn-success btn-block btn-xs green-yellow" title="Unpublish" ng-if="Jobpost.ispublished == true"
+                                            ng-click="changeIsPublishedJobpost(Jobpost)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                        <small class="hidden-xs">Unpublish</small>
+                                    </button>
+                                </div>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3" ng-show="isJobpost">
+                                    <button class="btn btn-primary btn-block btn-xs" title="Edit"
+                                            ng-click="editJobpostRedirect(Jobpost.fkCfgServiceId.pkCfgServiceId, Jobpost.pkJobpostId)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        <small class="hidden-xs">Edit</small>
+                                    </button>
+                                </div>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3" ng-show="isJobpost">
+                                    <button class="btn btn-danger btn-block btn-xs" title="Delete"
+                                            ng-click="confirmRemove(Jobpost.pkJobpostId, 'jobpost')">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <small class="hidden-xs">Delete</small>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="recordCountJobpost > 10">
+                    <pagination total-items="recordCountJobpost"
+                                ng-model="currentPageJobpost" ng-click="scrollTo('#scrollToJobPostings')"
+                                items-per-page="totalCountPerPageJobpost"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                first-text="&laquo;" last-text="&raquo;" class="pagination-sm"
+                                boundary-links="true" rotate="false" num-pages="numPages">
+                    </pagination>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <span class="input-group input-group-sm" style="width: 275px; margin: auto">
+                            <span class="input-group-addon">Result<span ng-if="recordCountJobpost > 1">s</span> found: {{recordCountJobpost}}</span>
+                            <select class="form-control input-sm" ng-model="totalCountPerPageJobpost"
+                                    ng-init="totalCountPerPageJobpost = 10">
+                                <option value="10">10 results per page</option>
+                                <option value="25" ng-if="recordCountJobpost > 25">25 results per page</option>
+                                <option value="50" ng-if="recordCountJobpost > 50">50 results per page</option>
+                                <option value="100" ng-if="recordCountJobpost > 100">100 results per page</option>
+                                <option value="{{recordCountJobpost}}" ng-if="recordCountJobpost > 10">View All</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+        </tab>
+
+        <!--agent-->
+
+        <tab heading="Agent" class="tab-heading"
+             ng-show="makeAsMyAgentButton || showAgentTab || myDashboard"
+             active="agentTab" ng-click="switchTab('agent')">
+            <div class="panel panel-default panel-tab">
+                <br />
+
+                <div class="col-lg-6 col-md-8 col-lg-offset-1 col-md-offset-1" ng-show="expiredAgentAccount && !isCreateAgentMode">
+                    <label class="alert alert-warning col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                        <small>Your agent account has expired. Extend being an AGENT! Click Extent Agent below!</small>
+                    </label>
+                </div>
+                <div class="clearfix"></div>
+                <!--view agent details-->
+
+                <div ng-show="isLogin">
+                    <div class="col-lg-6 col-md-8 col-lg-offset-1 col-md-offset-1" ng-hide="isCreateAgentMode">
+                        <div class="well well-sm">
+                            <h4 class="text-center">
+                                <strong>My Agent Details</strong>
+                                <small ng-show="isWithAgent" class="pull-right editAgent" ng-click="editMode()">
+                                    Edit My Agent
+                                </small>
+                            </h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                        <strong>Agent Title:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                        {{agent.agentTitle}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                        <strong>Agent Description:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                        {{agent.agentDescription}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                        <strong>Agent Since:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                        {{agent.creationDate| date: 'longDate'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                        <strong ng-show="isMyAgentActive || !latestMapAgentCfgagentpackage.expirationDate">Account Expiration Date:</strong>
+                                        <strong ng-show="!isMyAgentActive && latestMapAgentCfgagentpackage.expirationDate">Account Expired Last:</strong>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12" ng-show="latestMapAgentCfgagentpackage.expirationDate">
+                                        {{latestMapAgentCfgagentpackage.expirationDate| date: 'medium'}}
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12" ng-hide="latestMapAgentCfgagentpackage.expirationDate">
+                                        N/A
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-5 col-md-5 col-sm-4 hidden-xs"></div>
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-toggle="modal" data-target="#agentModal"
+                                                ng-show="!latestMapAgentCfgagentpackage.expirationDate">
+                                            Activate Agent
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-toggle="modal" data-target="#agentModal"
+                                                ng-show="latestMapAgentCfgagentpackage.expirationDate">
+                                            Extend Agent
+                                        </button>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>                
+                        </div>
+                    </div>
+
+                    <!--create/edit my agent-->
+
+                    <div class="col-lg-6 col-md-8 col-lg-offset-1 col-md-offset-1" ng-show="isCreateAgentMode">
+                        <label class="alert alert-warning col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="noProfile">
+                            <small>You must create your profile first to become an AGENT!</small>
+                            <a href="#!/createprofile/agent">Create My Profile</a>
+                        </label>
+                        <label class="alert alert-warning col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="serviceProviderWithAgent">
+                            <small>You currently have an <a href="" ng-show="inactiveAgent">inactive</a> agent!<br />
+                                You must remove your current agent first if you want to be an AGENT!<br />
+                                You can view and remove your agent here.</small>
+                            <a href="#!/viewprofile/{{myAgentAppuserId}}" ng-click="setAgentTab()">View my Agent</a>
+                        </label>
+                        <div class="clearfix"></div>
+
+                        <div class="well well-sm">
+                            <h4 class="text-center"><strong>My Agent Details</strong></h4>
+                            <hr>
+                            <div class="row">
+                                <form name="agentForm" class="form-horizontal col-lg-12 col-md-12 col-sm-12" role="form">
+                                    <fieldset ng-disabled="noProfile || serviceProviderWithAgent">
+                                        <div class="form-group form-group-sm">
+                                            <label for="agentTitle" class="col-sm-4 control-label">Agent Title</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" id="agentTitle" 
+                                                       name="agentTitle" placeholder="Agent Title" 
+                                                       ng-model="agent.agentTitle" ng-minlength="2" 
+                                                       ng-maxlength="25" required />
+                                                <div class="text-center"  ng-show="!agentForm.agentTitle.$pristine && agentForm.agentTitle.$invalid">
+                                                    <small ng-show="agentForm.agentTitle.$error.required">Required field</small>
+                                                    <small ng-show="agentForm.agentTitle.$error.minlength">Minimum length is 2!</small>
+                                                    <small ng-show="agentForm.agentTitle.$error.maxlength">Maximum length is 25!</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="agentDescription" class="col-sm-4 control-label">Agent Description</label>
+                                            <div class="col-sm-7">
+                                                <textarea class="form-control input-sm" id="agentDescription" name="agentDescription"
+                                                          placeholder="Agent Description" ng-model="agent.agentDescription"
+                                                          rows="5" ng-minlength="10" ng-maxlength="1000" required>
+                                                </textarea>
+                                                <div class="text-center" ng-show="!agentForm.agentDescription.$pristine && agentForm.agentDescription.$invalid">
+                                                    <small ng-show="agentForm.agentDescription.$error.required">Required field</small>
+                                                    <small ng-show="agentForm.agentDescription.$error.minlength">minimum length is 10!</small>
+                                                    <small ng-show="agentForm.agentDescription.$error.maxlength">maximum length is 1000!</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-group-sm">
+                                            <label class="col-sm-4 control-label hidden-xs"></label>
+                                            <div class="col-sm-7 text-right">
+                                                <hr>
+                                                <button type="submit" class="btn btn-primary btn-sm" ng-click="saveAgent()" 
+                                                        ng-disabled="agentForm.$invalid">
+                                                    Save My Agent
+                                                </button>
+                                                <button type="button" ng-show="isWithAgent" class="btn btn-default btn-sm" ng-click="cancelAgent()">
+                                                    Cancel
+                                                </button>
+                                                <button type="button" ng-show="!isWithAgent" class="btn btn-default btn-sm" ng-click="clearAgent()">
+                                                    Clear
+                                                </button>
+                                                <div class="text-right" ng-show="!agentForm.$pristine && agentForm.$invalid">
+                                                    <hr>
+                                                    <small>Fill-up necessary details correctly!</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--service providers-->
+
+                <div class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1" id="scrollToAgentServiceProviders">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h4 class="text-center"><strong>My Service Provider<span ng-if="recordCountAgent > 1">s</span></strong></h4>
+                        </div>
+                        <div class="list-group-item" ng-show="!hasServiceProviders">
+                            <span ng-hide="doneLoadingServiceproviderList">Loading...</span>
+                            <span ng-show="doneLoadingServiceproviderList">No "Service Providers".</span>
+                        </div>
+                        <div class="list-group-item" ng-show="hasServiceProviders">
+                            <strong>Name</strong>
+                        </div>
+                        <div class="list-group-item services-provided" ng-show="hasServiceProviders"
+                             ng-repeat="MapAppuserAgent in lstMapAppuserAgent| orderBy: 'pkMapAppuserAgentId': true | startFrom:(currentPageAgent - 1) * totalCountPerPageAgent | limitTo: totalCountPerPageAgent">
+                            <div class="row">
+                                <a href="#!/viewprofile/{{MapAppuserAgent.fkServiceproviderAppuserId.pkAppuserId}}">
+                                    <span class="col-lg-10 col-md-10 col-sm-10 col-xs-7 text-nowrap">
+                                        {{MapAppuserAgent.fkServiceproviderAppuserId.firstName}} 
+                                        {{MapAppuserAgent.fkServiceproviderAppuserId.lastName}}
+                                    </span>
+                                </a>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 pull-right" ng-show="!isAgent">
+                                    <button ng-click="viewProfile(MapAppuserAgent.fkServiceproviderAppuserId.pkAppuserId)"
+                                            class="btn btn-primary btn-xs btn-block view-profile-button pull-right">
+                                        View Profile
+                                    </button>
+                                </div>
+                                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-3 pull-right" ng-show="isAgent">
+                                    <button type="button" class="btn btn-danger btn-xs btn-block" 
+                                            ng-click="confirmRemove(MapAppuserAgent.pkMapAppuserAgentId, 'serviceProvider')">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <small class="hidden-xs">Delete</small>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="recordCountAgent > 10">
+                    <pagination total-items="recordCountAgent"
+                                ng-model="currentPageAgent" ng-click="scrollTo('#scrollToAgentServiceProviders')"
+                                items-per-page="totalCountPerPageAgent"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                first-text="&laquo;" last-text="&raquo;" class="pagination-sm"
+                                boundary-links="true" rotate="false" num-pages="numPages">
+                    </pagination>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <span class="input-group input-group-sm" style="width: 275px; margin: auto">
+                            <span class="input-group-addon">Result<span ng-if="recordCountAgent > 1">s</span> found: {{recordCountAgent}}</span>
+                            <select class="form-control input-sm" ng-model="totalCountPerPageAgent"
+                                    ng-init="totalCountPerPageAgent = 10">
+                                <option value="10">10 results per page</option>
+                                <option value="25" ng-if="recordCountAgent > 25">25 results per page</option>
+                                <option value="50" ng-if="recordCountAgent > 50">50 results per page</option>
+                                <option value="100" ng-if="recordCountAgent > 100">100 results per page</option>
+                                <option value="{{recordCountAgent}}" ng-if="recordCountAgent > 10">View All</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+        </tab>
+
+        <!--company-->
+
+        <tab heading="Company" class="tab-heading" ng-show="myDashboard || isCompanyActive"
+             active="companyTab" ng-click="switchTab('company')">
+            <div class="panel panel-default panel-tab">
+                <br />
+
+                <div ng-hide="doneLoadingCompanyDetails">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        Loading...
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                </div>
+
+                <!--view company details-->
+
+                <div ng-show="doneLoadingCompanyDetails">
+
+                    <div ng-hide="hasCompany">
+                        <!--create/edit my agent-->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label class="alert alert-warning col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="noProfile">
+                                <small>You must create your profile first to register your company!</small>
+                                <a href="#!/createprofile/company">Create My Profile</a>
+                            </label>
+                            <label class="alert alert-warning col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="noProfile">
+                                Register your company <a href="#!/registercompany">here</a>!
+                                <br />
+                                <small><small><a href="http://info.ajsjee.com/information/why-register-my-company">Why should I register my company?</a></small></small>
+                            </label>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div ng-show="hasCompany">
+                        <div class="col-lg-6 col-md-8 col-lg-offset-1 col-md-offset-1">
+                            <div class="well well-sm">
+                                <h4 class="text-center">
+                                    <strong>Company Details</strong>
+                                    <a href="#!/managecompany" ng-show="myDashboard" class="pull-right">
+                                        <small>Edit Company</small>
+                                    </a>
+                                </h4>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                            <strong>Company Name:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                            {{company.companyName}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                            <strong>Business Nature:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                            {{company.businessNature}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                            <strong>DTI/SEC Business<br class="hidden-xs" /> Permit No.:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                            {{company.dtiSecNo}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                            <strong>Tax Identification No.:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                            {{company.taxIdentificationNo}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                            <strong>Company Type:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12"
+                                             ng-if="c.id == company.companyType"
+                                             ng-repeat="c in companyTypes">
+                                            {{c.description}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr ng-show="myDashboard">
+                                <div class="row" ng-show="myDashboard">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                                            <strong ng-show="isCompanyActive || !latestMapCompanyCfgcompanypackage.expirationDate">Account Expiration Date:</strong>
+                                            <strong ng-show="!isCompanyActive && latestMapCompanyCfgcompanypackage.expirationDate">Account Expired Last:</strong>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12" ng-show="latestMapCompanyCfgcompanypackage.expirationDate">
+                                            {{latestMapCompanyCfgcompanypackage.expirationDate| date: 'medium'}}
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12" ng-hide="latestMapCompanyCfgcompanypackage.expirationDate">
+                                            N/A
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr ng-show="myDashboard">
+                                <div class="row" ng-show="myDashboard">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-4 hidden-xs"></div>
+                                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                                            <button type="button" class="btn btn-primary btn-sm" 
+                                                    data-toggle="modal" data-target="#companyModal"
+                                                    ng-show="!latestMapCompanyCfgcompanypackage.expirationDate">
+                                                Activate Company
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-sm" 
+                                                    data-toggle="modal" data-target="#companyModal"
+                                                    ng-show="latestMapCompanyCfgcompanypackage.expirationDate && lstCfgCompanypackage.length > 1">
+                                                Extend Company
+                                            </button>
+                                        </div>
+                                        <hr ng-show="lstCfgCompanypackage.length > 1">
+                                    </div>
+                                </div>                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--employees-->
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="scrollToCompanyEmployees">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h4 class="text-center"><strong>Employee<span ng-if="recordCountEmployees > 1">s</span></strong>
+                                    <span ng-show="myDashboard">
+                                        <a href="#!/addemployee" class="btn btn-primary btn-xs pull-right" ng-show="hasCompany">Add Employee</a>
+                                    </span>
+                                </h4>
+                            </div>
+                            <div class="list-group-item" ng-hide="lstEmployees">
+                                No employee!
+                            </div>
+                            <div class="list-group-item hidden-xs" ng-show="lstEmployees">
+                                <div class="media-body col-lg-11 col-md-11 col-sm-11 col-xs-12 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                                    <div class="row cursor-pointer">
+                                        <div class="col-lg-3 col-md-3 col-sm-3" ng-click="sortFieldBy('firstName')" title="Sort By First Name">
+                                            <strong>First Name</strong>
+                                            &nbsp; &nbsp;
+                                            <span class="ajsjee-logo-color" ng-class="{'glyphicon glyphicon-chevron-up': orderByField == 'firstName' && reverseOrder == 'false', 'glyphicon glyphicon-chevron-down': orderByField == 'firstName' && reverseOrder == 'reverse'}"></span>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3" ng-click="sortFieldBy('lastName')" title="Sort By Last Name">
+                                            <strong>Last Name</strong>
+                                            &nbsp; &nbsp;
+                                            <span class="ajsjee-logo-color" ng-class="{'glyphicon glyphicon-chevron-up': orderByField == 'lastName' && reverseOrder == 'false', 'glyphicon glyphicon-chevron-down': orderByField == 'lastName' && reverseOrder == 'reverse'}"></span>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6" ng-click="sortFieldBy('employeeStatus')" title="Sort By Employee Status">
+                                            <strong>Employee Status</strong>
+                                            &nbsp; &nbsp;
+                                            <span class="ajsjee-logo-color" ng-class="{'glyphicon glyphicon-chevron-up': orderByField == 'employeeStatus' && reverseOrder == 'false', 'glyphicon glyphicon-chevron-down': orderByField == 'employeeStatus' && reverseOrder == 'reverse'}"></span>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="list-group-item" ng-repeat="Employee in lstEmployees| orderBy:orderByField:reverseOrder | startFrom:(currentPageEmployees - 1) * totalCountPerPageEmployees | limitTo: totalCountPerPageEmployees">
+                                <div class="media">
+                                    <div class="img-thumbnail thumbnail col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                        <img ng-src="{{Employee.profilePicture|| 'app/images/ajsjee-icons/no-profile-picture.png'}}" class="media-object img-responsive" alt="tool-image">
+                                    </div>
+
+                                    <div class="media-body col-lg-11 col-md-11 col-sm-11 col-xs-12" style="color: #444">
+                                        <div class="row">
+                                            <div class="col-xs-12 visible-xs text-nowrap">
+                                                <br />
+                                                <strong>{{Employee.firstName}}&nbsp; {{Employee.lastName}}</strong>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 text-nowrap hidden-xs">
+                                                <br />
+                                                <strong>{{Employee.firstName}}</strong>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 text-nowrap hidden-xs">
+                                                <br />
+                                                <strong>{{Employee.lastName}}</strong>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <br />
+                                                <small><strong ng-repeat="e in employeeStatus"
+                                                               ng-if="e.id == Employee.employeeStatus">
+                                                        {{e.description}}
+                                                    </strong></small>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 col-lg-offset-2 col-md-offset-2 col-sm-offset-1" ng-hide="myDashboard"
+                                                 ng-style="{'min-width': (viewportSize < 540) ? '120px' : ''}">
+                                                <br />
+                                                <a href="#!/viewemployee/{{Employee.pkEmployeeId}}" class="btn btn-primary btn-block btn-xs">
+                                                    View Services
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3" ng-show="myDashboard">
+                                                <br />
+                                                <a href="#!/manageemployee/{{Employee.pkEmployeeId}}" class="btn btn-success btn-block btn-xs">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                    <span class="hidden-xs">Edit</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3" ng-show="myDashboard">
+                                                <br />
+                                                <button type="button" class="btn btn-danger btn-block btn-xs" ng-click="confirmRemove(Employee.pkEmployeeId, 'company')">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                    <span class="hidden-xs">Delete</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="recordCountEmployees > 10">
+                        <pagination total-items="recordCountEmployees"
+                                    ng-model="currentPageEmployees" ng-click="scrollTo('#scrollToCompanyEmployees')"
+                                    items-per-page="totalCountPerPageEmployees"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    first-text="&laquo;" last-text="&raquo;" class="pagination-sm"
+                                    boundary-links="true" rotate="false" num-pages="numPages">
+                        </pagination>
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <span class="input-group input-group-sm" style="width: 275px; margin: auto">
+                                <span class="input-group-addon">Result<span ng-if="recordCountEmployees > 1">s</span> found: {{recordCountEmployees}}</span>
+                                <select class="form-control input-sm" ng-model="totalCountPerPageEmployees"
+                                        ng-init="totalCountPerPageEmployees = 10">
+                                    <option value="10">10 results per page</option>
+                                    <option value="25" ng-if="recordCountEmployees > 25">25 results per page</option>
+                                    <option value="50" ng-if="recordCountEmployees > 50">50 results per page</option>
+                                    <option value="100" ng-if="recordCountEmployees > 100">100 results per page</option>
+                                    <option value="{{recordCountEmployees}}" ng-if="recordCountEmployees > 10">View All</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </tab>
+
+        <!--feedback-->
+
+        <tab heading="Feedback" class="tab-heading" active="feedbackTab" ng-click="switchTab('feedback')">
+            <div class="panel panel-default panel-tab">
+                <br />
+
+                <div class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1" id="scrollToFeedback">
+                    <div class="well well-sm text-center">
+                        <strong>Feedback</strong>
+                    </div>
+                </div>
+
+                <div class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1" ng-show="isNotRated">
+                    <div id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-if="loginId > 0">
+                                <button class="btn btn-primary btn-sm" ng-show="showFeedback" id="postfeedback"
+                                        data-toggle="collapse" data-parent="#accordion" data-target="#collapseFeedbackForm"
+                                        ng-click="showFeedbackForm()">
+                                    Post a feedback
+                                </button>
+                                <button class="btn btn-primary btn-sm" ng-show="!showFeedback" disabled>
+                                    Post a feedback
+                                </button>
+                            </div>
+                            <div class="panel-heading" ng-if="loginId == 0">
+                                <button class="btn btn-primary btn-sm" ng-click="postFeedbackNotLogin()">
+                                    Post a feedback
+                                </button>
+                            </div>
+                            <div id="collapseFeedbackForm" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="col-lg-12">
+                                        <form name="feedbackForm" class="form-horizontal" role="form">
+                                            <div class="form-group" ng-hide="hasRatedFeedback">
+                                                <div class="col-lg-10 col-lg-offset-2 text-center">
+                                                    <label class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-warning">
+                                                        <small class="feedback-rate">* You need to rate this profile first before you can post a feedback!</small>
+                                                        <br class="hidden-lg" />
+                                                        <small>Just choose and click the rating stars above!</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <fieldset ng-disabled="!hasRatedFeedback">
+                                                <div class="form-group">
+                                                    <label for="feedback" class="col-lg-2 control-label">Message:</label>
+                                                    <div class="col-lg-10">
+                                                        <textarea class="form-control input-sm" name="feedback"
+                                                                  placeholder="Your feedback"
+                                                                  ng-minlength="2" ng-maxlength="1000"
+                                                                  ng-model="feedback.raterMessage" id="feedback"
+                                                                  rows="3" ng-required="feedbackRequired">
+                                                        </textarea>
+                                                        <div class="feedback-rate" ng-show="!feedbackForm.feedback.$pristine && feedbackForm.feedback.$invalid">
+                                                            <small ng-show="feedbackForm.feedback.$error.required">Message required</small>
+                                                            <small ng-show="feedbackForm.feedback.$error.minlength">Minimum length is 2!</small>
+                                                            <small ng-show="feedbackForm.feedback.$error.maxlength">Maximum length is 1000!</small>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label for="showName"><small>
+                                                                    <input type="checkbox" name="showName" id="showName" ng-model="feedback.showName" /> 
+                                                                    Post <strong>Anonymously</strong>.
+                                                                </small></label>
+                                                        </div>
+                                                        <br />
+                                                        <button class="btn btn-primary btn-sm" ng-disabled="feedbackForm.$invalid"
+                                                                ng-click="commentProfile()" ng-show="!editFeedbackMode">
+                                                            Post Feedback
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" ng-disabled="feedbackForm.$invalid"
+                                                                ng-click="commentProfile()" ng-show="editFeedbackMode">
+                                                            Save Feedback
+                                                        </button>
+                                                        <button class="btn btn-default btn-sm" ng-click="cancelFeedback()">
+                                                            cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--feedbacks-->
+
+                <div class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1">
+                    <label class="alert alert-warning text-center col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="!recordCount">
+                        <small ng-hide="doneLoadingFeedbackList">Loading...</small>
+                        <small ng-show="doneLoadingFeedbackList && !sameUser">Be the first to provide feedback!</small>
+                        <small ng-show="doneLoadingFeedbackList && sameUser">No posted feedback!</small>
+                    </label>
+                    <div class="panel panel-default feedback-messages"
+                         ng-repeat="Feedback in lstFeedback">
+                        <blockquote>
+                            <div class="pre-description">{{Feedback.raterMessage}}</div>
+                            <!--<div class="pre-description">{{Feedback.raterMessage | limitTo: feedbackLimitSize[Feedback.pkFeedbackId]}}{{Feedback.raterMessage.length > feedbackLimitSize[Feedback.pkFeedbackId] ? '...' : ''}} <span><a href="" ng-click="readMoreFeedback(Feedback.raterMessage)" ng-if="Feedback.raterMessage.length > feedbackLimitSize[Feedback.pkFeedbackId]">Read more</a></span></div>-->
+                            <br />
+                            <span>
+                                &nbsp; Posted
+                                <span ng-if="!Feedback.showName || Feedback.fkRaterAppuserId.pkAppuserId == loginId">
+                                    by <a href="#!/viewprofile/{{Feedback.fkRaterAppuserId.pkAppuserId}}">
+                                        {{Feedback.fkRaterAppuserId.firstName}}</a>
+                                </span>
+                                <span ng-if="Feedback.showName && Feedback.fkRaterAppuserId.pkAppuserId != loginId">
+                                    by <span style="color: black">Anonymous</span>
+                                </span>
+                                <strong>| {{Feedback.lastupdateDate| date: 'mediumDate'}}</strong>
+                            </span>
+                            <div class="clearfix"></div>
+                            <span class="last-span" ng-if="Feedback.fkRaterAppuserId.pkAppuserId == loginId" ng-show="showFeedback">
+                                &nbsp; 
+                                <a href="" ng-click="startEditFeedbackMode(Feedback)">Edit</a>
+                                &nbsp;
+                                <a href="" ng-click="confirmRemoveFeedback(Feedback.pkFeedbackId)">Delete</a>
+                            </span>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- pagination -->
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="recordCount" ng-if="recordCount > 5">
+                    <pagination total-items="recordCount" ng-model="currentPage"
+                                ng-show="isLargeScreen"
+                                ng-click="pageChanged(currentPage);
+                                            scrollTo('#scrollToFeedback')"
+                                items-per-page="5"
+                                previous-text="Previous" next-text="Next"
+                                first-text="First" last-text="Last"
+                                max-size="5" class="pagination-sm"
+                                boundary-links="true" rotate="false" num-pages="numPages">
+                    </pagination>
+                    <pagination total-items="recordCount" ng-model="currentPage"
+                                ng-show="!isLargeScreen"
+                                ng-click="pageChanged(currentPage);
+                                            scrollTo('#scrollToFeedback')"
+                                items-per-page="5"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                first-text="&laquo;" last-text="&raquo;"
+                                max-size="5" class="pagination-sm"
+                                boundary-links="true" rotate="false" num-pages="numPages">
+                    </pagination>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        </tab>
+    </tabset>
+</div>
+
+<!-- Modal Google Map-->
+
+<div class="modal fade" id="googlemapModal" tabindex="-1" role="dialog" aria-labelledby="googlemapModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="googlemapModalLabel">ajsjee Locator</h4>
+            </div>
+            <div class="modal-body text-center">
+                <div id="map"></div>
+                <br />
+                <p id="showAddress"><b>Address</b>: <span id="address"></span></p>
+                <p id="error"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm"
+                        data-dismiss="modal">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Agent Activation Modal-->
+
+<div class="modal fade" id="agentModal" tabindex="-1" role="dialog" aria-labelledby="agentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-center" id="agentModalLabel">Choose My Agent Package</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <div class="list-group-item hidden-xs">
+                        <div class="row">
+                            <span class="col-lg-5 col-md-5 col-sm-5 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                                <strong>Name</strong><br />
+                                <strong>Description</strong>
+                            </span>
+                            <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <strong>Duration</strong>
+                            </span>
+                            <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <strong>Price</strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="list-group-item activationPackages" ng-repeat="cfgAgentpackage in lstCfgAgentpackage"
+                         id="agentPackage{{cfgAgentpackage.pkCfgAgentpackageId}}" ng-hide="cfgAgentpackage.pkCfgAgentpackageId == 1 && latestMapAgentCfgagentpackage.expirationDate">
+                        <input name="cfgAgentpackage" id="cfgAgentpackage{{cfgAgentpackage.pkCfgAgentpackageId}}" 
+                               type="radio" class="col-lg-1 col-md-1 col-sm-1 col-xs-1"
+                               ng-click="setAgentPackage(cfgAgentpackage)"
+                               ng-checked="$index == hasExpirationDateAgent" />
+                        <label for="cfgAgentpackage{{cfgAgentpackage.pkCfgAgentpackageId}}"
+                               class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+                            <strong>{{cfgAgentpackage.cfgAgentpackageName}}</strong><br />
+                            {{cfgAgentpackage.cfgAgentpackageDescription}}
+                        </label>
+                        <label for="cfgAgentpackage{{cfgAgentpackage.pkCfgAgentpackageId}}" class="visible-xs col-xs-1"></label>
+                        <label for="cfgAgentpackage{{cfgAgentpackage.pkCfgAgentpackageId}}"
+                               class="col-lg-3 col-md-3 col-sm-3 col-xs-11">
+                            {{cfgAgentpackage.monthsDuration}} Month<span ng-if="cfgAgentpackage.monthsDuration > 1">s</span>
+                        </label>
+                        <label for="cfgAgentpackage{{cfgAgentpackage.pkCfgAgentpackageId}}" class="visible-xs col-xs-1"></label>
+                        <label for="cfgAgentpackage{{cfgAgentpackage.pkCfgAgentpackageId}}" 
+                               class="col-lg-3 col-md-3 col-sm-3 col-xs-11">
+                            {{cfgAgentpackage.packagePrice| currency: '&#8369; '}}
+                        </label>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm"
+                        ng-click="agentActivation()">
+                    Proceed
+                </button>
+                <button type="button" class="btn btn-warning btn-sm"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="makeAsMyAgentModal" tabindex="-1" role="dialog" aria-labelledby="makeAsMyAgentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-center" id="makeAsMyAgentModalLabel">Note: Your contact details will be replace by your Agent contact details.</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm"
+                        ng-click="makeAsMyAgent()" data-dismiss="modal">
+                    Accept
+                </button>
+                <button type="button" class="btn btn-warning btn-sm"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="removeAsMyAgentModal" tabindex="-1" role="dialog" aria-labelledby="removeAsMyAgentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-center" id="removeAsMyAgentModalLabel">Are you sure you want to remove your Agent?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm"
+                        ng-click="removeAsMyAgent()" data-dismiss="modal">
+                    Yes
+                </button>
+                <button type="button" class="btn btn-warning btn-sm"
+                        data-dismiss="modal">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Company Activation Modal-->
+
+<div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-center" id="companyModalLabel">Choose My Company Package</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <div class="list-group-item hidden-xs">
+                        <div class="row">
+                            <span class="col-lg-5 col-md-5 col-sm-5 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                                <strong>Name</strong><br />
+                                <strong>Description</strong>
+                            </span>
+                            <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <strong>Duration</strong>
+                            </span>
+                            <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <strong>Price</strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="list-group-item activationPackages" ng-repeat="cfgCompanypackage in lstCfgCompanypackage"
+                         id="companyPackage{{cfgCompanypackage.pkCfgCompanypackageId}}" ng-hide="cfgCompanypackage.pkCfgCompanypackageId == 1 && latestMapCompanyCfgcompanypackage.expirationDate">
+                        <input name="cfgCompanypackage" id="cfgCompanypackage{{cfgCompanypackage.pkCfgCompanypackageId}}" 
+                               type="radio" class="col-lg-1 col-md-1 col-sm-1 col-xs-1"
+                               ng-click="setCompanyPackage(cfgCompanypackage)"
+                               ng-checked="$index == hasExpirationDateCompany" />
+                        <label for="cfgCompanypackage{{cfgCompanypackage.pkCfgCompanypackageId}}"
+                               class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+                            <strong>{{cfgCompanypackage.cfgCompanypackageName}}</strong><br />
+                            {{cfgCompanypackage.cfgCompanypackageDescription}}
+                        </label>
+                        <label for="cfgCompanypackage{{cfgCompanypackage.pkCfgCompanypackageId}}" class="visible-xs col-xs-1"></label>
+                        <label for="cfgCompanypackage{{cfgCompanypackage.pkCfgCompanypackageId}}"
+                               class="col-lg-3 col-md-3 col-sm-3 col-xs-11">
+                            {{cfgCompanypackage.monthsDuration}} Month<span ng-if="cfgCompanypackage.monthsDuration > 1">s</span>
+                        </label>
+                        <label for="cfgCompanypackage{{cfgCompanypackage.pkCfgCompanypackageId}}" class="visible-xs col-xs-1"></label>
+                        <label for="cfgCompanypackage{{cfgCompanypackage.pkCfgCompanypackageId}}" 
+                               class="col-lg-3 col-md-3 col-sm-3 col-xs-11">
+                            {{cfgCompanypackage.packagePrice| currency: '&#8369; '}}
+                        </label>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm"
+                        ng-click="companyActivation()">
+                    Proceed
+                </button>
+                <button type="button" class="btn btn-warning btn-sm"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--footer-->
+
+<div ng-controller="footerCtrl">
+    <div ng-include="'app/views/footer.html'"></div>
+</div>

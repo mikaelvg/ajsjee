@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    
+    <servlet>
+        <servlet-name>IPNListener</servlet-name>
+        <servlet-class>com.ajsjee.web.payment.IPNListener
+        </servlet-class>
+    </servlet>
+  
+    <servlet>
+        <servlet-name>IPNHandler</servlet-name>
+        <servlet-class>com.ajsjee.web.payment.ipn.IPNServlet
+        </servlet-class>
+    </servlet>
+  
+    <servlet-mapping>
+        <servlet-name>IPNHandler</servlet-name>
+        <url-pattern>/ipnservlet</url-pattern>
+    </servlet-mapping>
+  
+    <servlet-mapping>
+        <servlet-name>IPNListener</servlet-name>
+        <url-pattern>/ipn</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>signin</servlet-name>
+        <url-pattern>/app/signin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>callback</servlet-name>
+        <url-pattern>/app/callback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logout</servlet-name>
+        <url-pattern>/app/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>post</servlet-name>
+        <url-pattern>/app/post</url-pattern>
+    </servlet-mapping>
+    
+    
+    <filter>
+        <filter-name>CORS</filter-name>
+        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CORS</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+</web-app>

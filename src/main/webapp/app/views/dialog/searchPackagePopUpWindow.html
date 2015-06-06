@@ -1,0 +1,35 @@
+<div class="modal-body" style="padding: 0; overflow: hidden; border-radius: 5px 5px 0 0;">
+    <div>
+        <img ng-src="{{(servicetoolInfo.toolImage) ? servicetoolInfo.toolImage : 'app/images/ajsjee-icons/service-package-default.png'}}"
+             class="img-responsive" alt="image"
+             style="width: 100%;" />
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <br />
+        <strong>{{servicetoolInfo.toolName}}</strong>
+        <div class="clearfix"></div>
+        <strong><small>{{servicetoolInfo.companyName}}</small></strong>
+        <hr />
+        <div ng-style="{'height': (viewportSize < 600) ? '200px' : '', 'overflow': (viewportSize < 600) ? 'scroll' : 'hidden'}">
+            <small class="pre-description">{{servicetoolInfo.toolDescription}}</small>
+        </div>
+        <hr />
+        <small>
+            Price: <strong>{{servicetoolInfo.rentPrice| currency: '&#8369;'}}</strong>
+            <span ng-repeat="unit in priceUnitInfo"
+                  ng-if="unit.id == servicetoolInfo.rentUnit">
+                {{unit.description}}
+            </span>
+        </small>
+        <div class="clearfix"></div>
+        <br />
+    </div>
+</div>
+<div class="modal-footer" ng-if="viewPage == 'viewService'">
+    <button class="btn btn-default btn-xs" ng-click="no()"><strong>CLOSE</strong></button>
+</div>
+<div class="modal-footer" ng-if="viewPage != 'viewService'">
+    <button class="btn btn-default btn-xs" ng-click="no()"><strong>BACK</strong></button>
+    <button class="btn btn-default btn-xs" ng-click="yes()"><strong>VIEW SERVICE PROVIDER</strong></button>
+</div>

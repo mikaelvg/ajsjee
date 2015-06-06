@@ -1,0 +1,152 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta name="fragment" content="!" />
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone-no">
+        <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width, height=device-height">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ajsjee.com</title>
+        <meta name="description" content="ajsjee.com is a free advertising website for people who are looking for service/s, businesss-minded individual hunting for opportunities and service providers seeking for potential customers.">
+        <meta name="keywords" content="service, ajsjee">
+        <base href="/">
+        <link rel="icon" type="image/png" href="app/images/favicon.png" />
+        <script>
+            if (document.domain === 'localhost') {
+                console.log('localhost');
+                document.writeln("<link rel='stylesheet' href='app/styles/bootstrap.css' />");
+                document.writeln("<link rel='stylesheet' href='app/styles/cropper.min.css' />");
+                document.writeln("<link rel='stylesheet' href='app/styles/main.css' />");
+                document.writeln("<link rel='stylesheet' href='app/styles/autocomplete.css' />");
+                document.writeln("<link rel='stylesheet' href='app/bower_components/toastr/toastr.min.css' />");
+            } else {
+                document.writeln("<link rel='stylesheet' href='app/styles/styles.min.css' />");
+            }
+        </script>
+    </head>
+    <body ng-app="ajsjeeApp">
+        <div ng-view=""></div>
+        
+        <script type="text/javascript" src="app/bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="app/bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript" src="app/bower_components/angular-ui/build/angular-ui.min.js"></script>
+        <script type="text/javascript" src="app/scripts/app.js"></script>
+        <script type="text/javascript" src="app/scripts/filters.js"></script>
+        <script type="text/javascript" src="app/scripts/oauthProviderIds.js"></script>
+        
+        <script type="text/javascript" src="app/bower_components/angular-route/angular-route.min.js"></script>
+        
+        <script type="text/javascript" src="app/scripts/controllers/footerCtrl.js"></script>
+        <script type="text/javascript" src="app/scripts/controllers/headerCtrl.js"></script>
+        <script type="text/javascript" src="app/scripts/controllers/homeCtrl.js"></script>
+        
+        <script type="text/javascript" src="app/angular-seo.js"></script>
+        
+        <script type="text/javascript">
+//            document.writeln("<script type='text/javascript' src='app/bower_components/jquery/dist/jquery.min.js'><" + "/script>");
+//            document.writeln("<script type='text/javascript' src='app/bower_components/angular/angular.min.js'><" + "/script>");
+//            document.writeln("<script type='text/javascript' src='app/bower_components/angular-ui/build/angular-ui.min.js'><" + "/script>");
+
+//            document.writeln("<script type='text/javascript' src='app/scripts/app.js'><" + "/script>");
+//            document.writeln("<script type='text/javascript' src='app/scripts/filters.js'><" + "/script>");
+//            document.writeln("<script type='text/javascript' src='app/scripts/oauthProviderIds.js'><" + "/script>");
+
+            if (document.domain === 'localhost') {
+                document.writeln("<script type='text/javascript' src='app/scripts/directives.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/iframeheight.min.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/cropper.min.js'><" + "/script>");
+            } else {
+                document.writeln("<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&language=en&sensor=true'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/min/scripts.min.js'><" + "/script>");
+            }
+
+            document.writeln("<script type='text/javascript' src='app/bower_components/hello/dist/hello.all.min.js'><" + "/script>");
+            document.writeln("<script type='text/javascript' src='app/bower_components/angular-bootstrap/ui-bootstrap.min.js'><" + "/script>");
+            document.writeln("<script type='text/javascript' src='app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'><" + "/script>");
+            document.writeln("<script type='text/javascript' src='app/bower_components/angular-cookie/angular-cookie.min.js'><" + "/script>");
+//            document.writeln("<script type='text/javascript' src='app/bower_components/angular-route/angular-route.min.js'><" + "/script>");
+            document.writeln("<script type='text/javascript' src='app/bower_components/bootstrap/dist/js/bootstrap.min.js'><" + "/script>");
+            document.writeln("<script type='text/javascript' src='app/bower_components/ng-img-crop/compile/minified/ng-img-crop.js'><" + "/script>");
+            document.writeln("<script type='text/javascript' src='app/bower_components/toastr/toastr.min.js'><" + "/script>");
+//            document.writeln("<script type='text/javascript' src='app/bower_components/imagesloaded/imagesloaded.js'><" + "/script>");
+
+            if (document.domain === 'localhost') {
+                document.writeln("<script type='text/javascript' src='app/scripts/modules/google.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/modules/twitter.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/modules/linkedin.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/modules/facebook.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/modules/yahoo.js'><" + "/script>");
+
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/agentCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/confirmDialogCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/feedbackCtrl.js'><" + "/script>");
+//                document.writeln("<script type='text/javascript' src='app/scripts/controllers/footerCtrl.js'><" + "/script>");
+//                document.writeln("<script type='text/javascript' src='app/scripts/controllers/headerCtrl.js'><" + "/script>");
+//                document.writeln("<script type='text/javascript' src='app/scripts/controllers/homeCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/loginCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/manageCompanyCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/manageEmployeeCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/manageJobpostCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/manageServiceCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/multiloginCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/paymentCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/postadCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/postbackCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/programCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/quickAgentRegisterCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/quickCompanyRegisterCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/quickServiceRegisterCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/searchCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/settingsCtrl.js'><" + "/script>");
+
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/viewCfgServiceCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/viewCompanyCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/viewJobpostCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/viewProfileCtrl.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/controllers/viewServiceCtrl.js'><" + "/script>");
+
+                document.writeln("<script type='text/javascript' src='app/scripts/services/accountFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/agentFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/appuserFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/cfgCategoryFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/cfgJobpostpackageFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/cfgServiceFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/codeManagerFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/companyFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/constantFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/employeeFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/feedbackFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/helloFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/jobpostFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/locationFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/loginFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/loginWrapperFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/mapAgentCfgagentpackageFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/mapAppuserAgentFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/mapCfgserviceCfgcategoryFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/mapCompanyCfgcompanypackageFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/mapJobpostCfgjobpostpackageFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/oauthFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/packageFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/paymentFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/profileFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/programFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/ratingFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/referralFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/searchFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/sendMailFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/serviceFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/servicetoolFactory.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/sessionService.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/services/sharedDataFactory.js'><" + "/script>");
+
+                document.writeln("<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&language=en&sensor=true'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/ng-map.js'><" + "/script>");
+                document.writeln("<script type='text/javascript' src='app/scripts/autocomplete.js'><" + "/script>");
+            } else {
+                document.writeln("<script type='text/javascript' src='app/scripts/min/modules-controllers-services.min.js'><" + "/script>");
+            }
+//            document.writeln("<script type='text/javascript' src='app/angular-seo.js'><" + "/script>");
+        </script>
+    </body>
+</html>

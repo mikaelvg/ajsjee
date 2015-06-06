@@ -1,0 +1,10 @@
+{
+    "elements": {
+        "img-crop": {}
+    },
+    "attributes": {
+        "js.src": {
+            "context": "script"
+        }
+    }
+}

@@ -1,0 +1,155 @@
+<div ng-controller="headerCtrl">
+    <div ng-include="'app/views/header.html'"></div>
+</div>
+
+<!-- multi-login -->
+
+<div class="container container-fix">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-lg-offset-1 col-md-offset-1">
+            <div class="well well-sm">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h4><strong>Manage Authentication Accounts</strong></h4>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 text-justify">
+                            <small>
+                                This feature allows you to have two or more login accounts to access a single ajsjee account. 
+                                Having two or more accounts will allow you to delete a compromised account. <br />
+                                For example, your Gmail account was hacked. Simply delete the Gmail login account using your Facebook login account.
+                            </small>
+                            <br />
+                            <small><strong>Note that ajsjee does not store any of your passwords.</strong></small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-md-10 col-sm-6 col-xs-12" ng-show="doneLoading">
+                    <br />
+                    <br />
+                    <strong>You are currently logged in using:</strong>
+                    <hr>
+                    <div class="row text-center login-account">
+                        <div class="col-lg-6 col-md-7 col-sm-6 col-xs-3" ng-if="oauthProvider == 'facebook'">
+                            <div class="social-icon facebook-color">
+                                <img src="app/images/social-icons/facebook.png" alt="facebook" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-7 col-sm-6 col-xs-3" ng-if="oauthProvider == 'twitter'">
+                            <div class="social-icon twitter-color">
+                                <img src="app/images/social-icons/twitter.png" alt="twitter" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-7 col-sm-6 col-xs-3" ng-if="oauthProvider == 'google'">
+                            <div class="social-icon google-color">
+                                <img src="app/images/social-icons/google.png" alt="google" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-7 col-sm-6 col-xs-3" ng-if="oauthProvider == 'yahoo'">
+                            <div class="social-icon yahoo-color">
+                                <img src="app/images/social-icons/yahoo.png" alt="yahoo" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-7 col-sm-6 col-xs-3" ng-if="oauthProvider == 'linkedin'">
+                            <div class="social-icon linkedin-color">
+                                <img src="app/images/social-icons/linkedin.png" alt="linkedin" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-lg-8 col-md-10 col-sm-6 col-xs-12 login-account" ng-show="doneLoading">
+                    <br />
+                    <h4><strong>Manage your login account</strong></h4>
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-if="oauthProvider != 'facebook'">
+                            <div class="social-icon facebook-color">
+                                <img src="app/images/social-icons/facebook.png" alt="facebook" />
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-default btn-xs btn-block"
+                                    ng-show="!hasFacebookAccount" ng-click="createOauth('facebook')">
+                                Add
+                            </button>
+                            <button type="button" class="btn btn-delete-multilogin btn-xs btn-block"
+                                    ng-show="hasFacebookAccount" ng-click="removeAccount('facebook')">
+                                Delete
+                            </button>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-if="oauthProvider != 'twitter'">
+                            <div class="social-icon twitter-color">
+                                <img src="app/images/social-icons/twitter.png" alt="twitter" />
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-default btn-xs btn-block"
+                                    ng-show="!hasTwitterAccount" ng-click="createOauth('twitter')">
+                                Add
+                            </button>
+                            <button type="button" class="btn btn-delete-multilogin btn-xs btn-block"
+                                    ng-show="hasTwitterAccount" ng-click="removeAccount('twitter')">
+                                Delete
+                            </button>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-if="oauthProvider != 'google'">
+                            <div class="social-icon google-color">
+                                <img src="app/images/social-icons/google.png" alt="google" />
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-default btn-xs btn-block"
+                                    ng-show="!hasGoogleAccount" ng-click="createOauth('google')">
+                                Add
+                            </button>
+                            <button type="button" class="btn btn-delete-multilogin btn-xs btn-block"
+                                    ng-show="hasGoogleAccount" ng-click="removeAccount('google')">
+                                Delete
+                            </button>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-if="oauthProvider != 'yahoo'">
+                            <div class="social-icon yahoo-color">
+                                <img src="app/images/social-icons/yahoo.png" alt="yahoo" />
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-default btn-xs btn-block"
+                                    ng-show="!hasYahooAccount" ng-click="createOauth('yahoo')">
+                                Add
+                            </button>
+                            <button type="button" class="btn btn-delete-multilogin btn-xs btn-block"
+                                    ng-show="hasYahooAccount" ng-click="removeAccount('yahoo')">
+                                Delete
+                            </button>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-if="oauthProvider != 'linkedin'">
+                            <div class="social-icon linkedin-color">
+                                <img src="app/images/social-icons/linkedin.png" alt="linkedin" />
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-default btn-xs btn-block"
+                                    ng-show="!hasLinkedinAccount" ng-click="createOauth('linkedin')">
+                                Add
+                            </button>
+                            <button type="button" class="btn btn-delete-multilogin btn-xs btn-block"
+                                    ng-show="hasLinkedinAccount" ng-click="removeAccount('linkedin')">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--footer-->
+
+
+<div ng-controller="footerCtrl" ng-show="doneLoading">
+    <div ng-include="'app/views/footer.html'"></div>
+</div>

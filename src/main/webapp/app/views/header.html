@@ -1,0 +1,250 @@
+<!--header navigation-->
+
+<nav class="navbar navbar-default {{navbarFixedTop}}" id="navbarShadow" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#ajsjee-navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand logo" href="#!/home">
+                <img src="app/images/ajsjee-logo.png" ng-src="" alt="ajsjee" />
+            </a>
+            <p class="navbar-text pull-right visible-sm visible-xs">
+                <span ng-show="sharedData.firstName">Hi <span ng-bind="sharedData.firstName" style="color: #000"></span></span> 
+            </p>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="ajsjee-navbar">
+            <div class="thumbnail hidden-lg hidden-md">
+                <div class="col-md-12">
+                    <ul class="nav navbar-nav navigation">
+                        <li><a href="#!/postad" ng-class="{'active': currentPath == '/postad'}">Post free ad</a></li>
+                        <li><a href="#!/search" ng-class="{'active': currentPath == '/search'}">Browse ads</a></li>
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">My ajsjee &nbsp;<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="" ng-click="isLoginRedirect('mydashboard')" ng-class="{'active': currentPath == '/mydashboard'}">My Dashboard</a></li>
+                                <li><a href="" ng-click="isLoginRedirect('settings')" ng-class="{'active': currentPath == '/settings'}">Settings</a></li>
+                                <li><a href="" ng-click="isLoginRedirect('multilogin')" ng-class="{'active': currentPath == '/multilogin'}">Multi Login</a></li>
+                                <li ng-if="sharedData.loginId == 1 || sharedData.loginId == 3" class="divider"></li>
+                                <li ng-if="sharedData.loginId == 1 || sharedData.loginId == 3"><a href="" ng-click="reloadConstants()">Reload Constants</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" ng-hide="sharedData.firstName" ng-hide="isRegisterPage">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" ng-hide="sharedData.firstName">Login / Register &nbsp;<span class="caret"></span></a>
+                            <ul class="dropdown-menu social-dropdown">
+                                <li><a class="btn facebook social-button" ng-click="checkIfAccountExist('facebook')"><strong>Facebook</strong></a></li>
+                                <li><a class="btn twitter social-button" ng-click="checkIfAccountExist('twitter')"><strong>Twitter</strong></a></li>
+                                <li><a class="btn google social-button" ng-click="checkIfAccountExist('google')"><strong>Gmail</strong></a></li>
+                                <li><a class="btn yahoo social-button" ng-click="checkIfAccountExist('yahoo')"><strong>Yahoo</strong></a></li>
+                                <li><a class="btn linkedin social-button" ng-click="checkIfAccountExist('linkedin')"><strong>LinkedIn</strong></a></li>
+                            </ul>
+                        </li>
+                        <li ng-show="sharedData.firstName"><a href="" class="visible-sm visible-xs" ng-click="logout()">Logout</a></li>
+                    </ul>
+                </div>
+            </div>            
+
+            <ul class="nav navbar-nav navbar-style hidden-sm hidden-xs">
+                <li><a href="#!/postad" ng-class="{'active': currentPath == '/postad'}">Post free ad</a></li>
+                <li><a href="#!/search" ng-class="{'active': currentPath == '/search'}">Browse ads</a></li>
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown-menu" data-target="#dropdown3">My ajsjee <span class="caret"></span></a>
+                    <ul class="dropdown-menu" id="dropdown3">
+                        <li><a href="" ng-click="isLoginRedirect('mydashboard')" ng-class="{'active': currentPath == '/mydashboard'}">My Dashboard</a></li>
+                        <li><a href="" ng-click="isLoginRedirect('settings')" ng-class="{'active': currentPath == '/settings'}">Settings</a></li>
+                        <li><a href="" ng-click="isLoginRedirect('multilogin')" ng-class="{'active': currentPath == '/multilogin'}">Multi Login</a></li>
+                        <li ng-if="sharedData.loginId == 1 || sharedData.loginId == 3" class="divider"></li>
+                        <li ng-if="sharedData.loginId == 1 || sharedData.loginId == 3"><a href="" ng-click="reloadConstants()">Reload Constants</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs" ng-hide="isRegisterPage">
+                <li class="dropdown pull-right" ng-hide="sharedData.firstName">
+                    <a href="">Login / Register &nbsp;<span class="caret"></span></a>
+                    <ul class="dropdown-menu social-dropdown">
+                        <li><a class="btn btn-xs facebook social-button" ng-click="checkIfAccountExist('facebook')"><strong>Facebook</strong></a></li>
+                        <li><a class="btn btn-xs twitter social-button" ng-click="checkIfAccountExist('twitter')"><strong>Twitter</strong></a></li>
+                        <li><a class="btn btn-xs google social-button" ng-click="checkIfAccountExist('google')"><strong>Gmail</strong></a></li>
+                        <li><a class="btn btn-xs yahoo social-button" ng-click="checkIfAccountExist('yahoo')"><strong>Yahoo</strong></a></li>
+                        <li><a class="btn btn-xs linkedin social-button" ng-click="checkIfAccountExist('linkedin')"><strong>LinkedIn</strong></a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p class="navbar-text navbar-right hidden-sm hidden-xs" ng-show="sharedData.firstName">
+                Hi <span ng-bind="sharedData.firstName" style="color: #000"></span> &nbsp; &nbsp;
+                <a href="" class="navbar-link" ng-click="logout()">Logout</a>
+            </p>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
+</nav>
+
+<!-- search -->
+
+<div class="container-fluid search"
+     ng-style="{'margin-top': (currentPath.indexOf('/viewcompany/') != - 1) ? '0' : ((viewportSize > 974) ? '81px' : '50px'), 'margin-bottom': (currentPath == '/') ? '0' : '15px'}">
+    <div class="container">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <input type="text" class="form-control input-sm" ng-model="param.searchKey" placeholder="Find a...">
+            </div>
+
+            <div class="form-group">
+                <select class="form-control input-sm" ng-model="param.searchTypeId"
+                        ng-options="s.id as s.description for s in searchType">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <select class="form-control input-sm" ng-model="param.cfgCategoryId"
+                        ng-disabled="!lstCfgCategory"
+                        ng-options="CfgCategory.pkCfgCategoryId as CfgCategory.cfgCategoryName
+                        for CfgCategory in lstCfgCategory">
+                    <option value="" selected>All Categories</option>
+                </select>
+            </div>
+
+            <div class="form-group hidden-xs text-center">
+                in
+            </div>
+
+            <!--            <div class="form-group input-location" ng-if="cfgBarangayId && selectedLocation != 'Entire Philippines'" ng-show="">
+                            <div class="btn-group location-dropdown">
+                                <button type="button" class="btn btn-info btn-xs dropdown-toggle pull-right" data-toggle="dropdown">
+                                    {{selectedLocation}}
+                                    <small class="caret"></small>
+                                </button>
+                                <img src="app/images/ajsjee-icons/ajax-loader.gif" alt="Loading..." ng-show="!isDoneLoadingCfgBarangay && !barangayLoadingError" />
+                                <span>&nbsp;</span>
+                                <ul class="dropdown-menu pull-right">
+                                    <li ng-click="selectLocation('all')"><a href=""><small>Entire Philippines</small></a></li>
+                                    <li ng-click="selectLocation('Barangay')"><a href=""><small>Barangay</small></a></li>
+                                    <li ng-click="selectLocation('City/town')"><a href=""><small>City/town</small></a></li>
+                                    <li ng-click="selectLocation('State/province')"><a href=""><small>State/province</small></a></li>
+                                </ul>
+                            </div>
+                            <input type="text"
+                                   ng-class="{'ng-invalid': !param.location && selectedCfgBarangayId}"
+                                   class="form-control input-sm"
+                                   typeahead-on-select="setCfgBarangayId($item)" 
+                                   placeholder="{{barangayPlaceholder}}"
+                                   ng-model="selectedCfgBarangayId"
+                                   typeahead="CfgBarangay.barangayName + ', ' + CfgBarangay.fkCfgCitytownId.citytownName for CfgBarangay in lstCfgBarangay | filter:$viewValue | limitTo:30"
+                                   ng-change="clearLocationId()"
+                                   id="selectedCfgBarangayId"
+                                   ng-blur="hideNoResultFound()"
+                                   ng-disabled="!isDoneLoadingCfgBarangay"/>
+                            <div ng-show="startTypeahead">
+                                <div class="typeahead-no-result-found">
+                                    <small><small>Please enter a valid Philippine barangay!</small></small>
+                                </div>
+                            </div>
+                        </div>-->
+
+            <div class="form-group input-location">
+                <!--<div class="form-group input-location" ng-if="cfgCitytownId && selectedLocation != 'Entire Philippines'">-->
+                <!--                <div class="btn-group location-dropdown" ng-show="">
+                                    <button type="button" class="btn btn-info btn-xs dropdown-toggle pull-right" data-toggle="dropdown">
+                                        {{selectedLocation}}
+                                        <small class="caret"></small>
+                                    </button>
+                                    <img src="app/images/ajsjee-icons/ajax-loader.gif" alt="Loading..." ng-show="!isDoneLoadingCfgCitytown && !citytownLoadingError" />
+                                    <span>&nbsp;</span>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li ng-click="selectLocation('all')"><a href=""><small>Entire Philippines</small></a></li>
+                                        <li ng-click="selectLocation('Barangay')"><a href=""><small>Barangay</small></a></li>
+                                        <li ng-click="selectLocation('City/town')"><a href=""><small>City/town</small></a></li>
+                                        <li ng-click="selectLocation('State/province')"><a href=""><small>State/province</small></a></li>
+                                    </ul>
+                                </div>-->
+                <input type="text"
+                       ng-class="{'ng-invalid': !param.location && selectedCfgCityTownId}"
+                       class="form-control input-sm"
+                       typeahead-on-select="setCfgCitytownId($item)" 
+                       placeholder="{{cityTownPlaceholder}}"
+                       ng-model="selectedCfgCityTownId"
+                       typeahead="CfgCitytown.citytownName + ', ' + CfgCitytown.fkCfgStateprovinceId.stateprovinceName for CfgCitytown in lstCfgCitytown | filter:$viewValue | limitTo:30"
+                       ng-change="clearLocationId()"
+                       id="selectedCfgCityTownId"
+                       ng-blur="hideNoResultFound()"
+                       ng-disabled="!isDoneLoadingCfgCitytown"/>
+                <div ng-show="startTypeahead">
+                    <div class="typeahead-no-result-found">
+                        <small><small>Please enter a valid Philippine city/town!</small></small>
+                    </div>
+                </div>
+            </div>
+
+            <!--            <div class="form-group input-location" ng-if="cfgStateprovinceId && selectedLocation != 'Entire Philippines'" ng-show="">
+                            <div class="btn-group location-dropdown">
+                                <button type="button" class="btn btn-info btn-xs dropdown-toggle pull-right" data-toggle="dropdown">
+                                    {{selectedLocation}}
+                                    <small class="caret"></small>
+                                </button>
+                                <img src="app/images/ajsjee-icons/ajax-loader.gif" alt="Loading..." ng-show="!isDoneLoadingCfgStateprovince && !stateprovinceLoadingError" />
+                                <span>&nbsp;</span>
+                                <ul class="dropdown-menu pull-right">
+                                    <li ng-click="selectLocation('all')"><a href=""><small>Entire Philippines</small></a></li>
+                                    <li ng-click="selectLocation('Barangay')"><a href=""><small>Barangay</small></a></li>
+                                    <li ng-click="selectLocation('City/town')"><a href=""><small>City/town</small></a></li>
+                                    <li ng-click="selectLocation('State/province')"><a href=""><small>State/province</small></a></li>
+                                </ul>
+                            </div>
+                            <input type="text"
+                                   ng-class="{'ng-invalid': !param.location && selectedCfgStateprovinceId}"
+                                   class="form-control input-sm"
+                                   typeahead-on-select="setCfgStateprovinceId($item)" 
+                                   placeholder="{{stateprovincePlaceholder}}"
+                                   ng-model="selectedCfgStateprovinceId"
+                                   typeahead="CfgStateprovince.stateprovinceName for CfgStateprovince in lstCfgStateprovince | filter:$viewValue | limitTo:30"
+                                   ng-change="clearLocationId()"
+                                   id="selectedCfgStateprovinceId"
+                                   ng-blur="hideNoResultFound()"
+                                   ng-disabled="!isDoneLoadingCfgStateprovince"/>
+                            <div ng-show="startTypeahead">
+                                <div class="typeahead-no-result-found">
+                                    <small><small>Please enter a valid Philippine state/province!</small></small>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="form-group input-location" ng-if="selectedLocation == 'Entire Philippines'">
+                            <div class="btn-group location-dropdown">
+                                <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    {{selectedLocation}}
+                                    <small class="caret"></small>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li ng-click="selectLocation('all')"><a href=""><small>Entire Philippines</small></a></li>
+                                    <li ng-click="selectLocation('Barangay')"><a href=""><small>Barangay</small></a></li>
+                                    <li ng-click="selectLocation('City/town')"><a href=""><small>City/town</small></a></li>
+                                    <li ng-click="selectLocation('State/province')"><a href=""><small>State/province</small></a></li>
+                                </ul>
+                            </div>
+                            <input type="text"
+                                   class="form-control input-sm"
+                                   placeholder="Entire Philippines"
+                                   value="Entire Philippines"
+                                   ng-disabled="selectedLocation == 'Entire Philippines'"/>
+                        </div>-->
+
+            <div class="form-group form-btn text-right">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="searchDatabase()">
+                    <span class="visible-xs">Search</span>
+                    <span class="glyphicon glyphicon-search visible-lg visible-md visible-sm"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--back to top-->
+
+<small class="badge badge-top" id="goToTopButton" ng-click="goToTop()">Top</small>

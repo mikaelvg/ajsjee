@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://buildph.ajsjee.com/" />
+<title>BrowseAds(NotLoggedInNotYetRegistered)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">BrowseAds(NotLoggedInNotYetRegistered)</td></tr>
+</thead><tbody>
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<!--Click "Browse Ads"-->
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//a[contains(text(),'Browse ads')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=strong.ng-binding</td>
+	<td>Service Providers</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=li.text-justify &gt; small.ng-binding</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[4]/div/div/div/h4/strong</td>
+	<td>The Service Provider</td>
+</tr>
+<!--Click "View Profile"-->
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Contact Details</td>
+	<td>Contact Details</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Services</td>
+	<td>Services</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Job Postings</td>
+	<td>Job Postings</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Feedback</td>
+	<td>Feedback</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Company</td>
+	<td>Company</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//a[contains(text(),'Browse ads')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//a[5]/div/div[2]/div/ul/li/h4/strong</td>
+	<td>Expat Mountaineering Team</td>
+</tr>
+</tbody></table>
+</body>
+</html>
