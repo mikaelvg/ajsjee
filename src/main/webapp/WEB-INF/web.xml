@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     
-    <servlet>
+<!--    <servlet>
         <servlet-name>IPNListener</servlet-name>
         <servlet-class>com.ajsjee.web.payment.IPNListener
         </servlet-class>
@@ -41,7 +41,7 @@
     <servlet-mapping>
         <servlet-name>post</servlet-name>
         <url-pattern>/app/post</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     
     
     <filter>

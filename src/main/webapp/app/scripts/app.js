@@ -1,7 +1,6 @@
 'use strict';
 
-angular
-        .module('ajsjeeApp', [
+angular.module('ajsjeeApp', [
             'ipCookie',
             'ngRoute',
             'ui.bootstrap',
@@ -11,7 +10,7 @@ angular
             'seo'
         ])
 
-        .config(function($routeProvider, $locationProvider) {
+        .config(function ($routeProvider, $locationProvider) {
 
             hello.init({
                 facebook: CLIENT_IDS_ALL.facebook,
@@ -62,5 +61,5 @@ angular
                         redirectTo: '/'
                     });
 
-        $locationProvider.hashPrefix('!');
+            $locationProvider.hashPrefix('!');
         });
