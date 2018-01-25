@@ -25,6 +25,7 @@ else
 	PORT_NUMBER="5432"
 	DATABASE_NAME="ajsjee"
 	USER_NAME="postgres"
+	PGPASSWORD="admin123"
 fi
 
 export SSLMODE=required

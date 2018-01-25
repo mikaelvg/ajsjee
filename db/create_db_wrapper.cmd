@@ -7,6 +7,7 @@ set 	PORT_NUMBER=5432
 set	DATABASE_NAME=ajsjee
 set	USER_NAME=postgres
 set 	SQL_SCRIPT=create_db.sql
+set     PGPASSWORD=admin123
 
 REM determine present working directory
 if exist db\%SQL_SCRIPT% cd db
